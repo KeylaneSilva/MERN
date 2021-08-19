@@ -19,5 +19,14 @@ DataSchema.pre('save', function(next){
     next();
 });
 
+//Encripitar a senha no update
+DataSchema.pre('findOneAndUpdate', function(next){
+    var password = this.getUpdate().senha_usuario+'';
+    if(password.length<55){
+        this.getUpdate().senha_usuario = bcrypt.hashSync(password, 10);
+    }
+    next();
+});
+
 const usuarios = mongoose.model('Usuarios', DataSchema);
 module.exports = usuarios;

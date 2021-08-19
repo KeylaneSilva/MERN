@@ -4,20 +4,25 @@
   "description": "curso basico de nodejs",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "server": "nodemon server.js",
+    "dev": "concurrently \" npm run server\" \" npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "client": "0.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "create-react-app": "^4.0.3",
     "express": "^4.17.1",
     "mongoose": "^5.13.7",
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "concurrently": "^6.2.1",
     "nodemon": "^2.0.12"
   }
 }

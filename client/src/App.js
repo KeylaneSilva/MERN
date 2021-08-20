@@ -1,12 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Inicio from "./pages/client/painel/index"
+import Routes from "./routes";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>CURSO BÁSICO DE MERN</h1>
-      </header>
+    <div>
+      <Routes />
     </div>
   );
 }

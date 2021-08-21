@@ -7,8 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
+
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
@@ -99,11 +100,11 @@ const useStyles = makeStyles((theme) => ({
       height: 240,
     },
   }));
+<CssBaseline />
 
-export default function MenuAdmin(){
+export default function MenuAdmin({title}){
 
     const classes = useStyles();
-
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -127,7 +128,7 @@ export default function MenuAdmin(){
             <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                Dashboard
+                {title}
             </Typography>
             </Toolbar>
         </AppBar>

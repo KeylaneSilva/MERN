@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -12,42 +12,55 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 import MenuAdmin from '../../../components/menu-admin';
 import Footer from '../../../components/footer-admim';
+import api from '../../../services/api';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
+  root: {display: 'flex',},
   appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: 30,
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
-  formControl:{
-    width: '100%'
-  }
+  content: {flexGrow: 1,height: '100vh',overflow: 'auto',},
+  container: {paddingTop: theme.spacing(4),paddingBottom: theme.spacing(4),},
+  paper: {padding: 30,display: 'flex',overflow: 'auto',flexDirection: 'column',},
+  fixedHeight: {height: 240,},
+  formControl:{width: '100%'}
 }));
 
-export default function Dashboard() {
-  const classes = useStyles();
+export default function UsuarioCadastrar() {
   
+  const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [tipo, setTipo] = useState('');
+
+  async function handleSubmit(){
+    const data = {
+      nome_usuario: nome,
+      email_usuario: email,
+      senha_usuario: senha,
+      tipo_usuario: tipo
+    }
+      //api
+      if(nome!= '' && email!='' && senha !='' && tipo!=''){
+        const response = await api.post('/api/usuarios', data);
+
+        if(response.status == 200){
+          window.location.href="/admin/usuarios"
+        }else{
+          alert('Erro ao cadastrar o usuário!');
+        }
+      }else{
+        alert('Por favor, preencha todos os campos');
+
+      }
+
+
+  }
 
   return (
     <div className={classes.root}> 
@@ -68,6 +81,8 @@ export default function Dashboard() {
                       label="Nome completo"
                       fullWidth
                       autoComplete="given-name"
+                      value={nome}
+                      onChange={e => setNome(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -79,6 +94,8 @@ export default function Dashboard() {
                       label="Email"
                       fullWidth
                       autoComplete="family-name"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -90,11 +107,11 @@ export default function Dashboard() {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        // value={1}
-                        // onChange={handleChange}
+                        value={tipo}
+                        onChange={e => setTipo(e.target.value)}
                       >
-                        <MenuItem value={1}>Administrador</MenuItem>
-                        <MenuItem value={2}>Usuário</MenuItem>
+                        <MenuItem value={1}><strong>Administrador</strong></MenuItem>
+                        <MenuItem value={2}><strong>Funcionário</strong></MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -107,7 +124,14 @@ export default function Dashboard() {
                       label="Senha"
                       fullWidth
                       autoComplete="family-name"
+                      valeu={senha}
+                      onChange={e => setSenha(e.target.value)}
                     />
+                  </Grid>
+                  <Grid item sx={12} sm={12}>
+                    <Button onClick={handleSubmit} variant="contained" color="primary">
+                      Salvar
+                    </Button>
                   </Grid>
                 </Grid>
               </Paper>

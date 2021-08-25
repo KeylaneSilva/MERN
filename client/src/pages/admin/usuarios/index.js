@@ -13,10 +13,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import MenuAdmin from '../../../components/menu-admin';
 import Footer from '../../../components/footer-admim';
 import api from '../../../services/api';
+import { Chip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,12 +59,19 @@ export default function UsuariosListagem() {
   
   useEffect(() => {
     async function loadUsuarios(){
-      const response = await api.get("/api/usuarios");
+      const response = await api.get('/api/usuarios');
       // console.log(response.data);
       setUsuarios(response.data);
     }
     loadUsuarios();
   },[])
+
+  async function handleDelete(id){
+    if(window.confirm('Deseja realmente excluir esse usuário?')){
+      var result = await api.delete('/api/usuarios.delete/'+id);
+      window.location.href = '/admin/usuarios';
+    }
+  }
 
   return (
     <div className={classes.root}> 
@@ -92,9 +102,21 @@ export default function UsuariosListagem() {
                               {row.nome_usuario}
                             </TableCell>
                             <TableCell align="center">{row.email_usuario}</TableCell>
-                            <TableCell align="center">{row.tipo_usuario}</TableCell>
-                            <TableCell align="center">{row.createdAt}</TableCell>
-                            <TableCell align="right">{'botões'}</TableCell>
+                            <TableCell align="center">{row.tipo_usuario === 1 ?<Chip label='Administrador' color='primary'></Chip> : <Chip label='Funcionário' color='secondary'></Chip>}</TableCell>
+                            <TableCell align="center">{new Date(row.createdAt).toLocaleString('pt-br')}</TableCell>
+                            <TableCell align="right">
+                            <ButtonGroup aria-label="outlined secondary button group">
+                            <Button color="primary"
+                            href={'/admin/usuarios/editar/' + row._id}>
+                              Atualizar
+                              </Button>
+                            <Button 
+                            color="secondary" 
+                            onClick={() => handleDelete(row._id)}>
+                              Excluir
+                            </Button>
+                          </ButtonGroup>
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

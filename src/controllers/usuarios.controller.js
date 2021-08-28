@@ -1,5 +1,8 @@
 const { findOne } = require('../models/usuario.model');
 const Usuario = require('../models/usuario.model');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secret = 'myscret';
 
 module.exports = {
     async index(req, res){
@@ -37,5 +40,33 @@ module.exports = {
         const data = {nome_usuario, email_usuario, senha_usuario, tipo_usuario};
         const user = await Usuario.findOneAndUpdate({_id}, data, {new:true});
         return res.json(user);
+    },
+    async login(req, res){
+        const { email, senha } = req.body;
+        Usuario.findOne({email_usuario: email}, function(err,user){
+            if(err){
+                console.log(err);
+                res.status(200).json({erro: 'Erro no servidor, por favor, tente novamente'});
+            }else if(!user){
+                res.status(200).json({status:2, erro: 'Email não cadastrado'});
+            }else{
+                user.isCorrectPassword(senha, async function(err, same){
+                    if(err){
+                        res.status(200).json({erro: 'Erro no servidor, por favor, tente novamente'});
+                    }else if(!same){
+                        res.status(200).json({status:2, erro: 'A senha não confere'});
+                    }else{
+                        const payload = { email };
+                        const token = jwt.sign(payload, secret, {
+                            expiresIn: '24h'
+                        })
+                        res.cookie('token', token, {httpOnly: true});
+                        res.status(200).json({status:1, auth:true, token:token,id_client: user.id,user_name:user.nome_usuario});
+                    }
+                })
+            }
+        })
+
     }
+
 }

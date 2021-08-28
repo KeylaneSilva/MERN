@@ -28,5 +28,16 @@ DataSchema.pre('findOneAndUpdate', function(next){
     next();
 });
 
+// Comparando a senha
+DataSchema.methods.isCorrectPassword = function (password, callback){
+    bcrypt.compare(password,this.senha_usuario, function(err, same){
+        if(err){
+            callback(err);
+        }else{
+            callback(err, same);
+        }
+    })
+}
+
 const usuarios = mongoose.model('Usuarios', DataSchema);
 module.exports = usuarios;

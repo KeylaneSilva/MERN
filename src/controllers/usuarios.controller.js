@@ -67,6 +67,22 @@ module.exports = {
             }
         })
 
+    },
+    //Verificando token para a autenticação nas rotas
+    async ckeckToken(req, res){
+        const token = req.body.token || req.query.token || req.cookies.token || req.headers['x-acess-token'];
+        if(!token){
+            res.json({status: 401, msg: 'Não foi autorizado: Token inesxistente!'})
+        }else{
+            jwt.verify(token, secret, function(err, decoded){
+                if(err){
+                    res.json({status: 401, msg: 'Não foi autorizado: Token inválido!'})
+                }else{
+                    res.email = decoded.email;
+                    res.json({status: 200})
+                }
+            })
+        }
     }
 
 }

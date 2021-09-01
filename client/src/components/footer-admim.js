@@ -8,7 +8,7 @@ export default function Copyright() {
       <Typography variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
         <Link color="inherit" href="https://material-ui.com/">
-          Curso de Básico de MERN
+          Keylane Silva
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}

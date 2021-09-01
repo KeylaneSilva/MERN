@@ -69,7 +69,7 @@ module.exports = {
 
     },
     //Verificando token para a autenticação nas rotas
-    async ckeckToken(req, res){
+    async checkToken(req, res){
         const token = req.body.token || req.query.token || req.cookies.token || req.headers['x-acess-token'];
         if(!token){
             res.json({status: 401, msg: 'Não foi autorizado: Token inesxistente!'})
@@ -83,6 +83,16 @@ module.exports = {
                 }
             })
         }
+    },
+    // Logout
+    async destroyToken(req,res){
+        const token = req.headers.token;
+        if(token){
+            res.cookie('token', null, {httpOnly: true});
+        }else{
+            res.status(401).send("Logout não autorizado!");
+        }
+        res.send("Sessão finalizada com sucesso!")
     }
 
 }

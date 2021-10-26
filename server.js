@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
         useFindAndModify: false
     },(err) => {
         if(err){
-            console('Houve um erro: '+err)
+            console.log('Houve um erro: '+err)
         }else{
             console.log('MongoDB CONECTADO com sucesso!')
         }

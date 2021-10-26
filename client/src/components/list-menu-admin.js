@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
+import AssessmentTwoToneIcon from '@material-ui/icons/AssessmentTwoTone';
 
 import ExitToApp from '@material-ui/icons/ExitToApp';
 
@@ -31,6 +32,12 @@ export const mainListItems = (
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Produtos" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <AssessmentTwoToneIcon />
+      </ListItemIcon>
+      <ListItemText primary="Relatórios" />
     </ListItem>
     
   </div>
